@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pendulum Photobooth</title>
+  <link rel=stylesheet href='./styles.css'>
+</head>
+<body>
+  <div class="container">
+    <div id='header'>
+        <h1><img style="height:30px" src='./logo_white.svg' /> Photobooth</h1>
+    </div>
+    <video id="camera" autoplay muted playsinline></video>
+
+    <div id="countdown"></div>
+
+    <div class="thumbnails" id="thumbnails">
+     
+
+    </div>
+
+    
+    <div id='bottombar'>
+        
+        <p>Press the <strong>Button</strong> to capture 4 photos.</p>
+    </div>
+
+    <div id="lightbox" style="display: none;">
+      <img id="lightbox-image" src="" alt="Lightbox Image">
+      <div class='preview-text'>
+        <img style="height:80px" src='./logo_white.svg' />
+
+      </div>
+    </div>
+    
+  </div>
+
+  <script src='./renderer.js'></script>
+</body>
+</html>
