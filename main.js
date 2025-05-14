@@ -7,6 +7,8 @@ function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     fullscreen: true,
+      fullscreenable: true, // Ensure the window can be fullscreened
+    kiosk: true, // Enable kiosk mode for a more immersive fullscreen experience
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
