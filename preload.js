@@ -1,7 +1,11 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  downloadImageFromBase64: (base64Data, filename) => ipcRenderer.invoke('download-image-from-base64', base64Data, filename)
+  downloadImageFromBase64: (base64Data, filename) => ipcRenderer.invoke('download-image-from-base64', base64Data, filename),
+  logToFile: (message, args) => { 
+    console.log("Logging to file:", message, args);
+    ipcRenderer.invoke('log-to-file', message, args)
+  }
 });
 
 /**

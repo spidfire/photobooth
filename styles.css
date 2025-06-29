@@ -6,8 +6,19 @@
       position: fixed;
       left: 0px;
       top: 10vh;
-      
+    transform: scaleX(-1);
+    transform-origin: center;      
     }
+
+    .flashAnimation {
+      animation: flash 0.5s linear;
+    }
+@keyframes flash {
+      0% { opacity: 0; }
+      1% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
     #thumbnails {
         width: 20vw;
         height: 80vh;

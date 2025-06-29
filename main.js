@@ -3,6 +3,8 @@ const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('node:path')
 const fs = require('fs')
 
+
+
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -50,6 +52,18 @@ app.on('window-all-closed', function () {
 // code. You can also put them in separate files and require them here.
 
 
+const logFilePath = path.join(__dirname, 'renderer.log');
+
+ipcMain.handle('log-to-file', async (event, message, args) => {
+  console.log(message, args);
+  let json = JSON.stringify(args);
+  const logEntry = `[${new Date().toISOString()}]  ${message} => ${json}\n`;
+  await fs.promises.appendFile(logFilePath, logEntry).catch(err => {
+    if (err) console.error('Failed to write log:', err);
+  });
+});
+
+
 // IPC handler to download an image
 ipcMain.handle('download-image-from-base64', async (event, base64Data, filename) => {
   // Remove data URL header if present
@@ -64,7 +78,10 @@ ipcMain.handle('download-image-from-base64', async (event, base64Data, filename)
   // Define the file path (e.g., saving in the Pictures folder)
   const filePath = path.join(app.getPath('pictures'), filename);
   
+  console.log(`Saving image to: ${filePath}`); // Log the file path for debugging
   // Write the buffer to file
   await fs.promises.writeFile(filePath, buffer);
   return filePath;
 });
+
+

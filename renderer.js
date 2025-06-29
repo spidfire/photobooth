@@ -1,6 +1,34 @@
+
+// const { ipcRenderer } = require('electron');
+
+// Example usage
+function logToFile(level, message) {
+  try {
+    // ipcRenderer.send('log-to-file', { level, message });
+    window.electronAPI.logToFile(level, message);
+
+  } catch (error) {
+    // window.console.__proto__.error.apply(console, ["Failed to log message:", error]);
+  }
+}
+
+// Hook into console for automatic logging
+console.log = (...args) => {
+    logToFile('info', args.join(' '));
+    // Optional: still output to the dev console
+    // window.console.__proto__.log.apply(console, args);
+};
+
+console.error = (...args) => {
+    logToFile('error', args.join(' '));
+    // window.console.__proto__.error.apply(console, args);
+};  
+  
+  
   /**************************************/
 /* 1) IndexedDB Setup & Utilities     */
 /**************************************/
+
 
 // We’ll create (or open) a database named "PhotoBoothDB" with an object store "failedUploads".
 let db;
@@ -141,6 +169,10 @@ function captureImage() {
 
   const ctx = canvas.getContext("2d");
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  camera.classList.add("flashAnimation");
+  setTimeout(() => {
+    camera.classList.remove("flashAnimation");
+  }, 500); // Duration of the flash animation
 
   return canvas.toDataURL("image/png");
 }
@@ -204,11 +236,19 @@ function displayThumbnail(base64Data, id) {
   }
 }
 
+var locked = false;
+
 async function takeFourPhotos() {
+  if(locked){
+    console.warn("Already taking photos, please wait.");
+    return;
+  }
+  locked = true;
   let previewPhotos = [];
+  filename = fileNameGenerator();
   for (let i = 0; i < 4; i++) {
       
-    filename = fileNameGenerator() + '_' + i + '_screenshot.jpg'
+    filename = filename + '_' + i + '_screenshot.jpg'
     await doCountdown(3);
     const base64 = captureImage();
     displayThumbnail(base64, i+ 1);
@@ -233,6 +273,8 @@ async function takeFourPhotos() {
       openLightbox(previewPhotos[i], 1000, () => resolve());
     });   
   }
+  locked = false;
+  console.log("All photos taken and processed.");
 
 }
 
@@ -268,6 +310,7 @@ bottombarEl.addEventListener("click", takeFourPhotos);
 video.addEventListener("click", takeFourPhotos);
 
 document.addEventListener("keydown", (e) => {
+
   if (e.code === "Space" || e.keyCode === 32  || e.keyCode === 13) {
     takeFourPhotos();
   }
