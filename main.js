@@ -2,6 +2,8 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('node:path')
 const fs = require('fs')
+// --- Photobooth Sync Logic ---
+const { syncNewerFiles } = require('./photobooth-sync');
 
 
 
@@ -32,7 +34,13 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  createWindow()
+  createWindow();
+
+  // On startup, try to sync newer files from Pictures folder
+  const picturesDir = app.getPath('pictures');
+  setInterval(() => {
+    syncNewerFiles(picturesDir);
+  }, 1000 * 10); // Sync every 10 seconds
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the

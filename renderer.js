@@ -126,7 +126,7 @@ const lightboxImageEl = document.getElementById("lightbox-image");
 
 async function initCamera() {
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+    const stream = await navigator.mediaDevices.getUserMedia({ video: {width:{exact:1280},height:{exact:(1280/4)*3}}, audio: false });
     video.srcObject = stream;
   } catch (err) {
     console.error("Error accessing the camera:", err);
@@ -186,7 +186,7 @@ function fileNameGenerator(){
 
     var date = new Date();
         
-    return date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2( date.getDate()) + pad2( date.getHours() ) + pad2( date.getMinutes() ) + pad2( date.getSeconds() );
+    return date.getFullYear().toString() +"-" + pad2(date.getMonth() + 1) +"-" + pad2( date.getDate())  +"_" + pad2( date.getHours() ) +"-"  + pad2( date.getMinutes() )  +"-"+ pad2( date.getSeconds() );
 }
 
 // Attempt to upload to the server
@@ -196,7 +196,7 @@ async function uploadPhoto(base64Data) {
     // Call the main process to save the buffer
     const savedPath = await window.electronAPI.downloadImageFromBase64(base64Data, filename);
 
-    console.log("Photo uploaded successfully to server.", savedPath);
+    console.log("Stored image: ", savedPath);
     return true;
   } catch (error) {
     console.error("Upload error:", error);
@@ -245,10 +245,10 @@ async function takeFourPhotos() {
   }
   locked = true;
   let previewPhotos = [];
-  filename = fileNameGenerator();
+  let baseFilename = fileNameGenerator();
   for (let i = 0; i < 4; i++) {
       
-    filename = filename + '_' + i + '_screenshot.jpg'
+    filename = baseFilename + '_' + i + '_screenshot.jpg'
     await doCountdown(3);
     const base64 = captureImage();
     displayThumbnail(base64, i+ 1);
