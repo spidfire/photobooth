@@ -120,6 +120,8 @@ function removeEntryFromIndexedDB(id) {
 const video = document.getElementById("camera");
 const thumbnailsContainer = document.getElementById("thumbnails");
 const countdownEl = document.getElementById("countdown");
+const cameraDownEl = document.getElementById("camera-down");
+const bottomBarImgEl = document.querySelector("#bottombar img");
 const bottombarEl = document.getElementById("bottombar");
 const lightboxEl = document.getElementById("lightbox");
 const lightboxImageEl = document.getElementById("lightbox-image");
@@ -149,14 +151,24 @@ function doCountdown(seconds) {
   return new Promise((resolve) => {
     let counter = seconds;
     countdownEl.textContent = counter;
+    countdownEl.style.display = "block";
+    cameraDownEl.style.display = "block";
+    bottomBarImgEl.style.display = "none";
     const interval = setInterval(() => {
       counter--;
       if (counter <= 0) {
         clearInterval(interval);
         countdownEl.textContent = "";
+        countdownEl.style.display = "none";
+            
+        cameraDownEl.style.display = "none";
+        bottomBarImgEl.style.display = "block";
         resolve();
       } else {
         countdownEl.textContent = counter;
+        countdownEl.style.display = "block";
+        cameraDownEl.style.display = "block";
+        bottomBarImgEl.style.display = "none";
       }
     }, 1000);
   });

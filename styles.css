@@ -46,7 +46,7 @@
         text-align: center;
     }
     #bottombar {
-      height:10vh;
+      height:20vh;
       position: fixed;
       bottom: 0px;
       left: 0;
@@ -69,20 +69,31 @@
     }
     #countdown{
         position: fixed;
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 8rem;
-            color: white;
-            text-shadow: 0 0 10px black;
-            background: #ffffff82;
-            /* width: 100px; */
-            /* height: 100px; */
-            text-align: center;
-            border-radius: 171px;
-            padding-left: 61px;
-            padding-right: 61px;
-            aspect-ratio: 1;
+
+        height: 10vh;
+        bottom: 5vh;
+        left: 20%;
+        font-size: 6rem;
+        vertical-align: middle;
+        color: white;
+        text-shadow: 0 0 10px black;
+        background: #ffffff82;
+        /* width: 100px; */
+        /* height: 100px; */
+        text-align: center;
+        border-radius: 171px;
+        padding-left: 61px;
+        padding-right: 61px;
+        aspect-ratio: 1;
+    }
+
+    #camera-down {
+        position: fixed;
+        bottom: 0vh;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        color: white;
     }
     #lightbox {
       position: fixed;
@@ -104,4 +115,16 @@
       color: white;
       box-shadow: 1px solid black;
       font-size: 60px;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      16.6% { opacity: 0.3; }
+      33.3% { opacity: 1; }
+      50% { opacity: 0.3; }
+      66.6% { opacity: 1; }
+      83.3% { opacity: 0.3; }
+    }
+
+    #camera-down.pulse {
+      animation: pulse 1s linear infinite;
     }
