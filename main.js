@@ -39,7 +39,7 @@ app.whenReady().then(() => {
   // On startup, try to sync newer files from Pictures folder
   const picturesDir = app.getPath('pictures');
   setInterval(() => {
-    syncNewerFiles(picturesDir);
+    // syncNewerFiles(picturesDir);
   }, 1000 * 10); // Sync every 10 seconds
 
   app.on('activate', function () {

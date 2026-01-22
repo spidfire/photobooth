@@ -110,7 +110,7 @@ async function syncNewerFiles(localDir) {
   for (const file of files) {
     const [localDate, id] = extractDateFromFilename(file);
    console.log('Checking file:', file, 'Local date:', localDate, 'Remote date:', lastRemoteDate, 'Remote ID:', lastRemoteId, 'Local ID:', id);
-    if (localDate && localDate >= lastRemoteDate && lastRemoteId < id) {
+    if (localDate && (localDate > lastRemoteDate || (localDate === lastRemoteDate && lastRemoteId < id))) {
       const filePath = path.join(localDir, file);
        
       try {
